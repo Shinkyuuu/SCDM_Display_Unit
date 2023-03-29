@@ -1,7 +1,9 @@
 import React, { Fragment } from "react";
 import { useNavigate } from "react-router-dom";
 import "./MMI.css";
-import logo from "./logo.png"
+import logo from "./logo.png";
+import axios from 'axios';
+
 const anime = require('animejs');
 
 
@@ -12,33 +14,32 @@ const anime = require('animejs');
 const MMI = () => {
     const navigate = useNavigate();
 
-    const goToDev = () => {
-        navigate("/DVPR");
+    // User Bluetooth Commands
+    const commands = {
+        playPause: 0,
+        skipForward: 1,
+        skipBackward: 2,
+        pair: 3,
+        volumeUp: 4,
+        volumeDown: 5
     }
 
-    const playPauseAudio = () => {
-        console.debug(`MMI | Transmit Play /Pause Music`);
-    };
-
-    const skipForwardAudio = () => {
-        console.debug(`MMI | Transmit Skip Forward Music`);
-    };
-
-    const skipBackwardAudio = () => {
-        console.debug(`MMI | Transmit Skip Backward Music`);
+    // Relay Bluetooth command to the Server 
+    const MMICommand = (command) => {
+        axios.post(`/cmd`, { opCode : Number(command)})
+        .then(res => { console.log(res); console.log(res.data); });
     };
 
     return (
         <Fragment>
             <div className = "Header">
                 <img className = "logo" src = {logo}/>
-                <button className = "goToDevBtn" onClick={goToDev}></button>
             </div>
 
             <div className = "MMIContainer">
-                <button id = "skipBackwardBtn" onClick={skipBackwardAudio}> Skip Backwards</button>
-                <button id = "playPauseBtn" onClick={playPauseAudio}> Play/Pause</button>
-                <button id = "skipForwardBtn" onClick={skipForwardAudio}> Skip Forward</button>
+                <button id = "skipBackwardBtn" onClick={() => MMICommand(commands.skipBackward)}> Skip Backwards</button>
+                <button id = "playPauseBtn" onClick={() => MMICommand(commands.playPause)}> Play/Pause</button>
+                <button id = "skipForwardBtn" onClick={() => MMICommand(commands.skipForward)}> Skip Forward</button>
             </div>
         </Fragment>
     );

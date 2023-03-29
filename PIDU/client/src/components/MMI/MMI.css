@@ -14,59 +14,24 @@ body {
     height: 150px;
     margin: 2% auto auto 2%;
 }
-
-.goToDevBtn {
-  font-family: "Open Sans", sans-serif;
-  font-size: 40px;
-  letter-spacing: 2px;
-  text-decoration: none;
-  text-transform: uppercase;
-  background-color: #FF9898;
-  text-emphasis-color: #ffffff;
-  color: #474747;
-  cursor: pointer;
-  height: 200px;
-  width: 200px;
-  border-radius: 100px;
-  border: 3px solid;
-  margin: 4% 4% auto auto;
-  padding: 0.25em 0.5em;
-  box-shadow: 10px 10px 0px 0px, 20px 20px 0px 0px, 30px 30px 0px 0px, 40px 40px 0px 0px, 50px 50px 0px 0px;
-  position: relative;
-  user-select: none;
-  -webkit-user-select: none;
-  touch-action: manipulation;
-}
-
-.goToDevBtn:active {
-  box-shadow: 0px 0px 0px 0px;
-  top: 50px;
-  left: 50px;
-}
-
-@media (min-width: 768px) {
-  .button-54 {
-    padding: 0.25em 0.75em;
-  }
-}
   
-  .MMIContainer {
-    position: absolute;
-    height: 100%;
-    width: 100%;
-    display: flex;
-    z-index: 0;
-    text-align: center;
-  }
+.MMIContainer {
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  display: flex;
+  z-index: 0;
+  text-align: center;
+}
 
-  #skipBackwardBtn {
-    margin: auto 5% auto auto;
-  }
+#skipBackwardBtn {
+  margin: auto 5% auto auto;
+}
 
-  #playPauseBtn {
-    margin: auto 0 auto 0;
-  }
+#playPauseBtn {
+  margin: auto 0 auto 0;
+}
 
-  #skipForwardBtn {
-    margin: auto auto auto 5%;
-  }
+#skipForwardBtn {
+  margin: auto auto auto 5%;
+}
