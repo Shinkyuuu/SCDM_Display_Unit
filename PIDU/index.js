@@ -19,7 +19,7 @@ var jsonParser = bodyParser.json();
 
 
 // Command UART Packets
-const commandPackets = ["bb0003001800e5", "bb0003001800e5", "bb0003001800e5", "bb0003001800e5", "bb0003001800e5", "bb0003001800e5"]; 
+const commandPackets = ["bb000400040007f1", "bb000400040009ef", "bb00040004000aee", "bb00040002005d9d", "", ""]; 
 
 // Open and Connect to Serial Port
 const port = new SerialPort({ path: '/dev/ttyACM0', baudRate: 115200 }, function (err) {
@@ -42,10 +42,20 @@ app.get("/", (req, res) => {
 
 // Bluetooth Command reception Page
 app.post('/cmd', jsonParser, function (req, res) {
-  packet = Buffer.from(commandPackets[req.body.opCode], 'hex');
+  res.send("Command Well Received!");
 
+  packet = Buffer.from(commandPackets[req.body.opCode], 'hex');
   // Transmit formatted packet to the SCDM
+  port.flush(function(err) {
+    console.log(err);
+    console.log('resume...');
+    port.resume();
+  });
+
+  
   port.write(packet, function(err) {
+    
+
     if (err) {
       return console.log('Error on write: ', err.message)
     }
