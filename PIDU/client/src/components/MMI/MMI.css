@@ -15,14 +15,27 @@
 }
 
 .logo {
-  height: 150px;
+  height: 100px;
   margin: 2% auto auto 2%;
 }
 
-.MMIContainer {
+.contentContainer {
   position: absolute;
-  height: 100vh;
-  width: 100vw;
+  top: 50%;
+  left: 50%;
+  /* margin: auto; */
+  transform: translate(-50%, -50%);
+
+}
+.MMIContainer {
+  /* background-color: #6c6192; */
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  margin-right: -50%;
+  transform: translate(-50%, -50%);
+  height: 300px;
+  width: 900px;
   display: flex;
   z-index: 0;
   text-align: center;
@@ -33,6 +46,8 @@
   width: 250px;
   height: 250px;
   background-color: white;
+  flex-shrink: 0;
+
 }
 
 /* Play / Pause Button */
@@ -41,9 +56,12 @@
   margin: auto 0 auto 0;
   border-radius: 300px;
   border-width: 0;
+  box-shadow: 0 0 30px rgb(255, 255, 255, 1);
+
   width: 300px;
   height: 300px;
   background-color: white;
+  flex-shrink: 0;
 }
 
 /* Play / Pause Symbol */
@@ -71,15 +89,34 @@
   width: 250px;
   height: 250px;
   background-color: white;
+  flex-shrink: 0;
+}
+
+.songContainer {
+  /* background-color: #6c6192; */
+  position: relative;
+  width: 900px;
+  margin-top: 750px;
+  left: 0%;
+}
+
+.songName {
+  font-size: 5rem;
+  color: white;
+}
+
+.artistName {
+  font-size : 3rem;
+  color: white;
 }
 
 .volumeSlider {
   position: absolute;
-  right: 10%;
+  right: 5%;
   top: 50%;
   transform: translate(50%, -50%);
   width: 100px;
-  height: 435px;
+  height: 60vh;
   background-color: #6c6192;
   border-radius: 25px;
   box-shadow: 0 0 50px rgba(255, 255, 255, 0.2);

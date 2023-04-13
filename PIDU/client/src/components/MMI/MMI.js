@@ -164,6 +164,7 @@ class MMI extends Component {
         this.volumeSlider = document.querySelector('.volumeSlider');
         this.sliderRange = document.querySelector('.sliderRange');
         this.sliderPath = document.querySelector('.sliderPath');
+        this.basePath = "M0,480 l320,0 l0,480 l-320,0 Z"
         this.mouseY = 0;
         this.mouseInitialY = 0;
         this.mouseDy = 0;
@@ -171,7 +172,7 @@ class MMI extends Component {
         this.minVol = parseInt(this.sliderRange.min);
         this.maxVol = parseInt(this.sliderRange.max);
         this.currVol = parseInt(this.sliderRange.value);
-        this.rangeHeight = 480;
+        this.rangeHeight = this.volumeSlider.offsetHeight;
         this.currentY = this.rangeHeight * this.currVol / this.maxVol;
         this.rangeMinY = this.rangeHeight * this.minVol / this.maxVol;
         this.rangeMaxY = this.rangeHeight * this.maxVol / this.maxVol;
@@ -204,7 +205,7 @@ class MMI extends Component {
 
         // Build `path` string and update `path` elements
     
-        this.newPath = "M0," + (this.rangeHeight - this.newSliderY) + " l320,0 l0,480 l-320,0 Z";
+        this.newPath = "M0," + (this.rangeHeight - this.newSliderY) + " l" + this.volumeSlider.offsetWidth + ",0 l0,1000 l-320,0 Z";
         this.sliderPath.setAttribute('d', this.newPath);
     }
 
@@ -246,26 +247,36 @@ class MMI extends Component {
                 <div className = "Header">
                     <img className = "logo" src = {logo}/>
                 </div>
+                <div className = "contentContainer">
+                    <div className = "MMIContainer">
+                        <button id = "skipBackwardBtn" onClick={() => this.skipBackwardClick(this.commands.skipBackward)}> Skip Backwards</button>
+                        <button id = "playPauseBtn" onClick={() => this.playPauseClick(this.commands.playPause)}>
+                            <div className = "PPContainer">
+                                <svg width="200px" height="200px">
+                                    <g>
+                                        <path className = "PPSymbol PPLeft" d="M50,50 L50,150 L136.6,100 Z" />
+                                    </g>
+                                </svg>
+                            </div>
+                            <div className = "PPContainer">
+                                <svg width="200px" height="200px">
+                                    <g>
+                                    <path className = "PPSymbol PPRight" d="M50,50 L50,150 L136.6,100 Z" />8:(ZA)
+                                    </g>
+                                </svg>
+                            </div>
+                        </button>
+                        <button id = "skipForwardBtn" onClick={() => this.skipForwardClick(this.commands.skipForward)}> Skip Forward</button>
+                    </div>
+                <div className = "songContainer">
+                    <h1 className = "songName">
+                        Song Name
+                    </h1>
+                    <h2 className = "artistName">
+                        Artist Name
+                    </h2>
+                </div>
 
-                <div className = "MMIContainer">
-                    <button id = "skipBackwardBtn" onClick={() => this.skipBackwardClick(this.commands.skipBackward)}> Skip Backwards</button>
-                    <button id = "playPauseBtn" onClick={() => this.playPauseClick(this.commands.playPause)}>
-                        <div className = "PPContainer">
-                            <svg width="200px" height="200px">
-                                <g>
-                                    <path className = "PPSymbol PPLeft" d="M50,50 L50,150 L136.6,100 Z" />
-                                </g>
-                            </svg>
-                        </div>
-                        <div className = "PPContainer">
-                            <svg width="200px" height="200px">
-                                <g>
-                                <path className = "PPSymbol PPRight" d="M50,50 L50,150 L136.6,100 Z" />8:(ZA)
-                                </g>
-                            </svg>
-                        </div>
-                    </button>
-                    <button id = "skipForwardBtn" onClick={() => this.skipForwardClick(this.commands.skipForward)}> Skip Forward</button>
                 </div>
 
                 <div className = "volumeSlider"
@@ -278,9 +289,9 @@ class MMI extends Component {
                     onTouchEnd = { () => this.mouseUp() }>
                     <input className = "sliderRange" type="range" min="0" max="100" value="50"/>
 
-                    <svg className = "sliderBar" width="320px" height="435px" >
+                    <svg className = "sliderBar" width="100px" height="80vh" >
                         <g>
-                            <path class="sliderPath" d="M0,480 l320,0 l0,480 l-320,0 Z">
+                            <path class="sliderPath" d= { this.basePath }>
                             </path>
                         </g>
                     </svg>
