@@ -1,9 +1,9 @@
-
-
 .BackgroundHolder {
   background-image: linear-gradient(135deg, rgb(92, 51, 64), rgb(186, 191, 255));
+  position: absolute;
   height: 100vh;
   width: 100vw;
+  z-index: -2;
 }
 
 .Header {
@@ -93,26 +93,49 @@
 }
 
 .songContainer {
-  /* background-color: #6c6192; */
-  position: relative;
+  position: absolute;
   width: 900px;
-  margin-top: 750px;
-  left: 0%;
+  left: 50px;
+  bottom: 50px;
 }
 
 .songName {
-  font-size: 5rem;
+  font-size: 4em;
   color: white;
 }
 
 .artistName {
-  font-size : 3rem;
+  margin-top: -40px;
+  margin-bottom: 0px;
+  font-size : 1.5em;
   color: white;
+}
+
+.deviceContainer {
+  position: absolute;
+  right: 50px;
+  bottom: 50px;
+  display: flex;
+}
+
+.deviceIcon {
+  width: 50px;
+  height: 70px;
+  background-color: white;
+  flex-shrink: 0;
+  margin: auto;
+}
+
+.deviceName {
+  margin: auto auto auto 10px;
+  color: white;
+  font-size: 1.5rem;
+  flex-shrink: 0;
 }
 
 .volumeSlider {
   position: absolute;
-  right: 5%;
+  right: 100px;
   top: 50%;
   transform: translate(50%, -50%);
   width: 100px;

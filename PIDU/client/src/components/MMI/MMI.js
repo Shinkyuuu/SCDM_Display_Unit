@@ -1,5 +1,5 @@
-import React, { Component, useSyncExternalStore, Fragment } from "react";
-import { useNavigate } from "react-router-dom";
+import React, { Component, Fragment } from "react";
+// import { useNavigate } from "react-router-dom";
 import "./MMI.css";
 import logo from "./logo.png";
 import axios from 'axios';
@@ -20,8 +20,7 @@ class MMI extends Component {
         skipForward: 1,
         skipBackward: 2,
         pair: 3,
-        volumeUp: 4,
-        volumeDown: 5
+        setVolume: 4
     }
 
     constructor(props) {
@@ -147,18 +146,18 @@ class MMI extends Component {
             targets: [".BackgroundHolder .star"],
             opacity: [
             {
-                duration: 3000,
+                duration: 500,
                 value: "0"
             },
             {
-                duration: 10000,
+                duration: 1000,
                 value: "1"
             }
             ],
 
             easing: "linear",
             loop: true,
-            delay: (el, i) => 100 * i
+            delay: (el, i) => 30 * i
         });
 
         this.volumeSlider = document.querySelector('.volumeSlider');
@@ -172,10 +171,10 @@ class MMI extends Component {
         this.minVol = parseInt(this.sliderRange.min);
         this.maxVol = parseInt(this.sliderRange.max);
         this.currVol = parseInt(this.sliderRange.value);
-        this.rangeHeight = this.volumeSlider.offsetHeight;
-        this.currentY = this.rangeHeight * this.currVol / this.maxVol;
-        this.rangeMinY = this.rangeHeight * this.minVol / this.maxVol;
-        this.rangeMaxY = this.rangeHeight * this.maxVol / this.maxVol;
+        this.volHeight = this.volumeSlider.offsetHeight;
+        this.volSliderY = this.volHeight * this.currVol / this.maxVol;
+        this.minVolSliderY = this.volHeight * this.minVol / this.maxVol;
+        this.maxVolSliderY = this.volHeight * this.maxVol / this.maxVol;
         this.newPath = 0;
         this.newY = 0;
         this.newSliderY = 0;
@@ -188,24 +187,16 @@ class MMI extends Component {
 
     // Function to update the slider value
     updateValue() {
-        this.currVol = parseInt(this.currentY * this.maxVol / this.rangeHeight);
+        this.currVol = parseInt(this.volSliderY * this.maxVol / this.volHeight);
         this.sliderRange.value = this.currVol;
 
-        // Some maths calc
-        // if (Math.abs(mouseDy) < mouseDyLimit) {
-        //     lastMouseDy = mouseDy;
-        // } else {
-        //     lastMouseDy = mouseDy < 0 ? -mouseDyLimit : mouseDyLimit;
-        // }
+        // console.log("newSliderY = " + this.volSliderY);
+            
+        this.newPath = "M0," + (this.volHeight - this.volSliderY) + 
+            " l" + this.volumeSlider.offsetWidth + ",0" + 
+            " l0," + this.volumeSlider.offsetHeight + 
+            " l-" + this.volumeSlider.offsetWidth + ",0 Z";
 
-        this.newSliderY = this.currentY + this.lastMouseDy / this.mouseDyFactor;
-        if (this.newSliderY < this.rangeMinY || this.newSliderY > this.rangeMaxY) {
-            this.newSliderY = this.newSliderY < this.rangeMinY ? this.rangeMinY : this.rangeMaxY;
-        }
-
-        // Build `path` string and update `path` elements
-    
-        this.newPath = "M0," + (this.rangeHeight - this.newSliderY) + " l" + this.volumeSlider.offsetWidth + ",0 l0,1000 l-320,0 Z";
         this.sliderPath.setAttribute('d', this.newPath);
     }
 
@@ -219,13 +210,18 @@ class MMI extends Component {
     mouseMove(e) {
         if (this.mouseY) {
             this.pageY = e.targetTouches ? e.targetTouches[0].pageY : e.pageY;
-            this.mouseDy = (this.pageY - this.mouseInitialY) * this.mouseDyFactor;
-            this.newY = this.currentY + this.mouseY - this.pageY;
-            if (this.newY >= this.rangeMinY && this.newY <= this.rangeMaxY) {
-                this.currentY = this.newY;
+            // console.log("volSliderY = " + this.volSliderY);
+            // console.log("mouseY = " + this.mouseY);
+            // console.log("pageY = " + this.pageY);
+            this.newY = this.volSliderY + this.mouseY - this.pageY;
+            // console.log("newY = " + this.newY);
+            // console.log("minRange, maxRange = " + this.minVolSliderY + " " + this.maxVolSliderY);
+
+            if (this.newY >= this.minVolSliderY && this.newY <= this.maxVolSliderY) {
+                this.volSliderY = this.newY;
                 this.mouseY = this.pageY;
             } else {
-                this.currentY = this.newY < this.rangeMinY ? this.rangeMinY : this.rangeMaxY;
+                this.volSliderY = this.newY < this.minVolSliderY ? this.minVolSliderY : this.maxVolSliderY;
             }
             // After doing maths, update the value
             this.updateValue();
@@ -238,7 +234,7 @@ class MMI extends Component {
         console.debug("Current Volume: " + this.currVol);
 
         // Reset values
-        this.mouseY = this.mouseDy = 0;
+        this.mouseY = 0;
     };
     
     render() {
@@ -260,23 +256,28 @@ class MMI extends Component {
                             </div>
                             <div className = "PPContainer">
                                 <svg width="200px" height="200px">
-                                    <g>
                                     <path className = "PPSymbol PPRight" d="M50,50 L50,150 L136.6,100 Z" />8:(ZA)
-                                    </g>
                                 </svg>
                             </div>
                         </button>
                         <button id = "skipForwardBtn" onClick={() => this.skipForwardClick(this.commands.skipForward)}> Skip Forward</button>
                     </div>
-                <div className = "songContainer">
-                    <h1 className = "songName">
-                        Song Name
-                    </h1>
-                    <h2 className = "artistName">
-                        Artist Name
-                    </h2>
                 </div>
+                <div className = "songContainer">
+                    <p className = "songName">
+                        This is my Song
+                    </p>
+                    <p className = "artistName">
+                        Cody Park
+                    </p>
+                </div>
+                <div className = "deviceContainer">
+                    <div className = "deviceIcon">
 
+                    </div>
+                    <p className = "deviceName">
+                        Cody's Galaxy
+                    </p>
                 </div>
 
                 <div className = "volumeSlider"
@@ -287,6 +288,7 @@ class MMI extends Component {
                     onMouseUp = { () => this.mouseUp() } 
                     onMouseLeave = { () => this.mouseUp() }
                     onTouchEnd = { () => this.mouseUp() }>
+
                     <input className = "sliderRange" type="range" min="0" max="100" value="50"/>
 
                     <svg className = "sliderBar" width="100px" height="80vh" >

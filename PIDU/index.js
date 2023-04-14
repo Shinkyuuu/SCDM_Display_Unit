@@ -19,7 +19,13 @@ var jsonParser = bodyParser.json();
 
 
 // Command UART Packets
-const commandPackets = ["bb000400040007f1", "bb000400040009ef", "bb00040004000aee", "bb00040002005d9d", "", ""]; 
+const commandPackets = [
+  "bb000400040007f1", // Play/Pause
+  "bb000400040009ef", // Skip Forward
+  "bb00040004000aee", // Skip backward
+  "bb00040002005d9d", // Pair
+  "", // Set Volume [TODO]
+]; 
 
 // Open and Connect to Serial Port
 const port = new SerialPort({ path: '/dev/ttyACM0', baudRate: 115200 }, function (err) {
