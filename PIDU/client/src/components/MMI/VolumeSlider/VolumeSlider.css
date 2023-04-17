@@ -1,0 +1,32 @@
+
+.volumeSlider {
+    position: absolute;
+    right: 100px;
+    top: 50%;
+    transform: translate(50%, -50%);
+    width: 100px;
+    height: 60vh;
+    background-color: #333333;
+    border-radius: 25px;
+    box-shadow: 0 0 50px rgba(156, 152, 177, 0.3);
+
+    user-select: none; 
+    cursor: pointer;
+    overflow: hidden;
+}
+  
+.sliderRange {
+    display: none;
+}
+
+.sliderPath {
+    fill: #dddddd;
+}
+
+.sound-icon{
+    height: 41px;
+    position: absolute;
+    transform: translateY(50%) translateX(50%);
+    bottom: 8%;
+    right: 50%;
+}

@@ -1,17 +1,18 @@
-import React, { Component, Fragment } from "react";
+import React, { Component, useContext, Fragment } from "react";
 import "./MMI.css";
-import logo from "./logo.png";
+import logo from "./assets/logo.png";
 import axios from 'axios';
 import anime from 'animejs/lib/anime.es.js';
-import StarrySky from "./StarrySky.js";
-import ConnectedDevice from "./ConnectedDevice.js";
-import VolumeSlider from "./VolumeSlider.js";
-
+import StarrySky from "./StarrySky/StarrySky.js";
+import ConnectedDevice from "./ConnectedDevice/ConnectedDevice.js";
+import VolumeSlider from "./VolumeSlider/VolumeSlider.js";
+import io from 'socket.io-client';
 /**
  * 
  * @returns MMI Fragment
  */
 class MMI extends Component {
+
     isPaused = true;
 
     // User Bluetooth Commands
@@ -25,7 +26,26 @@ class MMI extends Component {
 
     constructor(props) {
         super(props);
+    }
 
+
+    componentDidMount() {
+        this.socket = io("http://localhost:3001", {
+            withCredentials: false,
+            closeOnBeforeunload: false
+        });
+
+        this.socket.emit("start");
+
+        this.socket.on("test", (testData) => {
+
+        });
+
+        // this.socket.on("start")      
+    }
+
+    componentWillUnmount() {
+        this.socket.disconnect()
     }
 
     playPauseClick(command) {
@@ -117,15 +137,14 @@ class MMI extends Component {
 
 
 
-    MMICommand(command) {
+    MMICommand(command, parameter = null) {
         console.debug("Sending HTTP Command: " + command);
-        axios.post(`/cmd`, { opCode : Number(command)})
+        axios.post(`/cmd`, { 
+            opCode : Number(command),
+            parameter : parameter
+        })
         .then(res => { console.log(res); console.log(res.data); });
     }
-
-    // componentDidMount() {
-                     
-    // }
 
     render() {
         return (
@@ -135,7 +154,14 @@ class MMI extends Component {
                 </div>
                 <div className = "contentContainer">
                     <div className = "MMIContainer">
-                        <button id = "skipBackwardBtn" onClick={() => this.skipBackwardClick(this.commands.skipBackward)}> Skip Backwards</button>
+                        <button id = "skipBackwardBtn" className = "skipBtn" onClick={() => this.skipBackwardClick(this.commands.skipBackward)}> 
+                            <svg className = "SContainer" width="230px" height="200px">
+                                <g>
+                                    <path className = "SSymbol" d="M50,50 L50,150 Z" />
+                                    <path className = "SSymbol" d="M180,50 L180,150 L93.4,100 Z" />
+                                </g>
+                            </svg>
+                        </button>
                         <button id = "playPauseBtn" onClick={() => this.playPauseClick(this.commands.playPause)}>
                             <div className = "PPContainer">
                                 <svg width="200px" height="200px">
@@ -150,7 +176,14 @@ class MMI extends Component {
                                 </svg>
                             </div>
                         </button>
-                        <button id = "skipForwardBtn" onClick={() => this.skipForwardClick(this.commands.skipForward)}> Skip Forward</button>
+                        <button id = "skipForwardBtn" className = "skipBtn" onClick={() => this.skipForwardClick(this.commands.skipForward)}> 
+                            <svg className = "SContainer" width="230px" height="200px">
+                                <g>
+                                    <path className = "SSymbol" d="M50,50 L50,150 L136.6,100 Z" />
+                                    <path className = "SSymbol" d="M180,50 L180,150  Z" />
+                                </g>
+                            </svg>
+                        </button>
                     </div>
                 </div>
                 <div className = "songContainer">

@@ -1,11 +1,3 @@
-.BackgroundHolder {
-  background-image: linear-gradient(135deg, rgb(92, 51, 64), rgb(186, 191, 255));
-  position: absolute;
-  height: 100vh;
-  width: 100vw;
-  z-index: -2;
-}
-
 .Header {
   position: absolute;
   display: flex;
@@ -41,11 +33,33 @@
   text-align: center;
 }
 
+.skipBtn {
+  background: transparent;
+  border: none !important;
+}
+
+
+.SSymbol {
+  fill: #ffffff;
+  stroke-width: 35;
+  stroke: #ffffff;
+  filter: drop-shadow(0 0 5px rgba(255, 255, 255, 1));
+  stroke-linejoin: round;
+  stroke-linecap:round;
+
+}
+
+#skipForwardBtn {
+  margin: auto auto auto 5%;
+  width: 250px;
+  height: 250px;
+  flex-shrink: 0;
+}
+
 #skipBackwardBtn {
   margin: auto 5% auto auto;
   width: 250px;
   height: 250px;
-  background-color: white;
   flex-shrink: 0;
 
 }
@@ -69,7 +83,7 @@
 .PPContainer {
   position: absolute;
   top: 18%;
-  left: 18%;
+  left: 19%;
   /* top: 77px;
   left: 81px;   */
 }
@@ -78,18 +92,9 @@
   fill: #343434;
   stroke-width: 35;
   stroke: #343434;
+  /* filter: drop-shadow(0px 0px 5px rgba(0, 0, 0, 0.4)); */
   stroke-linejoin: round;
   stroke-linecap:round;
-}
-
-/* Skip Forward Button */
-
-#skipForwardBtn {
-  margin: auto auto auto 5%;
-  width: 250px;
-  height: 250px;
-  background-color: white;
-  flex-shrink: 0;
 }
 
 .songContainer {
@@ -109,57 +114,4 @@
   margin-bottom: 0px;
   font-size : 1.5em;
   color: white;
-}
-
-.deviceContainer {
-  position: absolute;
-  right: 50px;
-  bottom: 50px;
-  display: flex;
-}
-
-.deviceIcon {
-  width: 50px;
-  height: 70px;
-  background-color: white;
-  flex-shrink: 0;
-  margin: auto;
-}
-
-.deviceName {
-  margin: auto auto auto 10px;
-  color: white;
-  font-size: 1.5rem;
-  flex-shrink: 0;
-}
-
-.volumeSlider {
-  position: absolute;
-  right: 100px;
-  top: 50%;
-  transform: translate(50%, -50%);
-  width: 100px;
-  height: 60vh;
-  background-color: #6c6192;
-  border-radius: 25px;
-  box-shadow: 0 0 50px rgba(255, 255, 255, 0.2);
-  user-select: none; 
-  cursor: pointer;
-  overflow: hidden;
-}
-
-.sliderRange {
-  display: none;
-}
-
-.sliderPath {
-  fill: #FFFFFF;
-}
-
-.sound-icon{
-  height: 41px;
-  position: absolute;
-  transform: translateY(50%) translateX(50%);
-  bottom: 8%;
-  right: 50%;
 }

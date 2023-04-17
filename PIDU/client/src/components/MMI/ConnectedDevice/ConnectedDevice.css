@@ -1,0 +1,30 @@
+.deviceContainer {
+    position: absolute;
+    right: 50px;
+    bottom: 50px;
+    height: 100px;
+    display: flex;
+    text-align: center;
+}
+
+.deviceName {
+    margin: auto auto auto 10px;
+    color: white;
+    font-size: 1.8rem;
+    flex-shrink: 0;
+}
+
+.deviceBar {
+    width: 7px;
+    height: 20px;
+    border-radius: 2.5px;
+    background-color: rgb(79, 81, 109);
+    flex-shrink: 0;
+    margin-top: auto;
+    margin-bottom: 35px;
+    /* margin: auto; */
+  }
+  
+.barsContainer {
+    display: flex;
+  }
