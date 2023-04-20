@@ -6,8 +6,8 @@
     transform: translate(50%, -50%);
     width: 100px;
     height: 60vh;
-    background-color: #333333;
-    border-radius: 25px;
+    background-color: #1a191bc7;
+    border-radius: 15px;
     box-shadow: 0 0 50px rgba(156, 152, 177, 0.3);
 
     user-select: none; 
@@ -15,12 +15,16 @@
     overflow: hidden;
 }
   
+.sliderBar {
+    width:100px; 
+    height: 80vh;
+}
 .sliderRange {
     display: none;
 }
 
 .sliderPath {
-    fill: #dddddd;
+    fill: rgba(214, 169, 255, 0.89);
 }
 
 .sound-icon{

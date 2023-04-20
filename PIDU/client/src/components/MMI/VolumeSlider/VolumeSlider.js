@@ -1,8 +1,8 @@
 import React, { Component, Fragment } from "react";
-import anime from 'animejs/lib/anime.es.js';
-import io from 'socket.io-client';
-
+// import anime from 'animejs/lib/anime.es.js';
 import "./VolumeSlider.css";
+import SocketContext from '../../../context/socket/socket.js';
+
 
 class VolumeSlider extends Component {
     constructor(props) {
@@ -15,59 +15,54 @@ class VolumeSlider extends Component {
         this.updateValue = this.updateValue.bind(this);
     }
 
-    changeVolumeClick(command, newVolume) {
-        this.props.MMICommand(command, newVolume);
-    }
-
+    // When the UI renders...
     componentDidMount() {
         this.volSliderContainer = document.querySelector('.volumeSlider');
-        this.sliderRange = document.querySelector('.sliderRange');
         this.sliderPath = document.querySelector('.sliderPath');
         this.basePath = "M0,480 l320,0 l0,480 l-320,0 Z"
-        this.mouseY = 0;
-        this.minVol = parseInt(this.sliderRange.min);
-        this.maxVol = parseInt(this.sliderRange.max);
-        this.currVol = parseInt(this.sliderRange.value);
+        this.minVol = 0;
+        this.maxVol = 100;
         this.volHeight = this.volSliderContainer.offsetHeight;
-        this.volSliderY = this.volHeight * this.currVol / this.maxVol;
+        this.volSliderY = this.volHeight * this.state.volume / this.maxVol;
         this.minVolSliderY = this.volHeight * this.minVol / this.maxVol;
         this.maxVolSliderY = this.volHeight * this.maxVol / this.maxVol;
+        this.mouseY = 0;
         this.newPath = 0;
         this.newY = 0;
         this.pageY = 0;
         
         this.serverUpdateValue(this.state.volume);
 
-        this.socket = io("http://localhost:3001", {
-            withCredentials: false,
-            closeOnBeforeunload: false
-        });
-
-        this.socket.on("test", (newVol) => {
+        this.props.socket.on("Volume_Change", (newVol) => {
             let parsedVol = Math.floor((parseInt(newVol) * 100) / 127).toString();
             this.serverUpdateValue(parsedVol);
         });
-
     }  
 
+    // When the UI is about to unrender
     componentWillUnmount() {
-        this.socket.disconnect();
     }
 
+    // Handle new volume packet transmission
+    changeVolumeClick(command, newVolume) {
+        this.props.MMICommand(command, newVolume);
+    }
+
+    // Given the volume (in %) convert it to slider height and update slider
     serverUpdateValue(vol) {
         this.volSliderY = parseInt(vol * this.volHeight / this.maxVol);
-
         this.updateValue(vol);
     }
 
+    // Given slider height,reposition slider in UI
     updateValue(vol) {
-        this.setState({
-            volume: vol
+        // Update volume
+        this.setState({ volume: vol }, () => {
+            console.debug("Volume: " + vol);
         });
 
-        console.debug("Volume: " + vol);
 
-        
+        // Render new position for slider
         this.newPath = "M0," + (this.volHeight - this.volSliderY) + 
             " l" + this.volSliderContainer.offsetWidth + ",0" + 
             " l0," + this.volSliderContainer.offsetHeight + 
@@ -76,10 +71,12 @@ class VolumeSlider extends Component {
         this.sliderPath.setAttribute('d', this.newPath);
     }
 
+    // get mouse Y position if the user presses on the volume bar
     mouseDown(e) {
         this.mouseY = e.targetTouches ? e.targetTouches[0].pageY : e.pageY;
     }
 
+    // If the cursor is within the volume bar, calculate its relative position within volume bar
     mouseMove(e) {
         if (this.mouseY) {
             this.pageY = e.targetTouches ? e.targetTouches[0].pageY : e.pageY;
@@ -96,6 +93,7 @@ class VolumeSlider extends Component {
         }
     };
 
+    // if the cursor is released from the volume bar, update volume
     mouseUp() {
         if (this.mouseY) {
             let encodedVol = (this.state.volume * 127) / 100;
@@ -106,6 +104,7 @@ class VolumeSlider extends Component {
 
     };
 
+    // Render UI
     render() {
         return (
             <Fragment>
@@ -118,23 +117,23 @@ class VolumeSlider extends Component {
                     onMouseLeave = { () => this.mouseUp() }
                     onTouchEnd = { () => this.mouseUp() }>
 
-                    <input className = "sliderRange" 
-                        type = "range" 
-                        min = "0" 
-                        max = "100" 
-                        value = { this.state.volume }/>
-
-                    <svg className = "sliderBar" width="100px" height="80vh" >
+                    <svg className = "sliderBar" >
                         <g>
                             <path className = "sliderPath"/>
                         </g>
                     </svg>
 
-                    <img className = "sound-icon" draggable="false" src="https://i.imgur.com/peHsNzR.png"></img>
+                    <img className = "sound-icon" alt = "eighth note" draggable="false" src="https://i.imgur.com/peHsNzR.png"></img>
                 </div>
             </Fragment>
         );
     };
 };
 
-export default VolumeSlider;
+const VolumeSliderWithSocket = (props) => (
+    <SocketContext.Consumer>
+      {socket => <VolumeSlider {...props} socket={socket} />}
+    </SocketContext.Consumer>
+);
+
+export default VolumeSliderWithSocket;

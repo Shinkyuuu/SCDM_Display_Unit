@@ -1,0 +1,31 @@
+
+.skipBtn {
+    background: transparent;
+    border: none !important;
+    width: 235px;
+    height: 250px;
+
+}
+  
+
+.SSymbol {
+    fill: #ffffff;
+    stroke-width: 35;
+    stroke: #ffffff;
+    filter: drop-shadow(0 0 1.5px rgba(255, 255, 255, 1));
+    stroke-linejoin: round;
+    stroke-linecap:round;
+    animation-fill-mode: none;
+}
+
+#skipForwardBtn {
+    margin: auto auto auto 5%;
+    order: 3;
+    flex-shrink: 0;
+}
+
+#skipBackwardBtn {
+    margin: auto 5% auto auto;
+    order: 1;
+    flex-shrink: 0;
+}

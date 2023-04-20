@@ -1,5 +1,7 @@
 .deviceContainer {
     position: absolute;
+    background: transparent;
+    border: none !important;
     right: 50px;
     bottom: 50px;
     height: 100px;
@@ -9,7 +11,9 @@
 
 .deviceName {
     margin: auto auto auto 10px;
-    color: white;
+    color: rgb(255, 255, 255);
+
+    /* color: rgb(96, 88, 122); */
     font-size: 1.8rem;
     flex-shrink: 0;
 }
@@ -18,13 +22,15 @@
     width: 7px;
     height: 20px;
     border-radius: 2.5px;
-    background-color: rgb(79, 81, 109);
+    background-color: rgb(255, 235, 144);
+
+    /* background-color: rgb(154, 142, 182); */
     flex-shrink: 0;
     margin-top: auto;
     margin-bottom: 35px;
     /* margin: auto; */
-  }
+}
   
 .barsContainer {
     display: flex;
-  }
+}

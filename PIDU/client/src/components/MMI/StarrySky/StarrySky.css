@@ -1,6 +1,10 @@
 .BackgroundHolder {
-    background: linear-gradient(135deg, rgb(196, 145, 160),rgb(146, 146, 175), rgb(186, 191, 255));
-	animation: gradient 30s ease infinite;
+    /* background: linear-gradient(135deg, rgb(41, 41, 41),rgb(55, 44, 65), rgb(73, 57, 82)); */
+	/* background: linear-gradient(135deg, rgb(46, 37, 63),rgb(48, 44, 71), rgb(28, 38, 61)); */
+
+	background: linear-gradient(135deg, rgb(255, 176, 200),rgb(174, 174, 255), rgb(200, 141, 255));
+
+	animation: gradient 15s ease infinite;
 	background-size: 400% 400%;
     position: absolute;
     height: 100vh;
