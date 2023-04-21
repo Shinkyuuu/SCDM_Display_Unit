@@ -6,10 +6,9 @@
     transform: translate(50%, -50%);
     width: 100px;
     height: 60vh;
-    background-color: #1a191bc7;
+    background-color: #1b1929a6;
     border-radius: 15px;
-    box-shadow: 0 0 50px rgba(156, 152, 177, 0.3);
-
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
     user-select: none; 
     cursor: pointer;
     overflow: hidden;
@@ -24,7 +23,7 @@
 }
 
 .sliderPath {
-    fill: rgba(214, 169, 255, 0.89);
+    fill: rgba(117, 121, 175, 0.89);
 }
 
 .sound-icon{

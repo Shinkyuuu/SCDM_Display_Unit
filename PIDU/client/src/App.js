@@ -4,8 +4,8 @@ import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import io from 'socket.io-client';
 import './App.css';
 
-import MMI from "./components/MMI/MMI";
-import DVPR from "./components/DVPR/DVPR";
+import MMIWithSocket from "./components/MMI/MMI";
+import DVPRWithSocket from "./components/DVPR/DVPR";
 
 const socket = io("http://localhost:3001", {
     withCredentials: false,
@@ -17,8 +17,8 @@ function App() {
         <SocketContext.Provider value={socket}>
             <Router>
                 <Routes>
-                    <Route path="/" element={<MMI />}/>
-                    <Route path="/DVPR" element={<DVPR />}/>
+                    <Route path="/" element={<MMIWithSocket />}/>
+                    <Route path="/DVPR" element={<DVPRWithSocket />}/>
                 </Routes>
             </Router>
         </SocketContext.Provider>

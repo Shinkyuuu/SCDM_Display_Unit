@@ -9,12 +9,18 @@ class PlayPause extends Component {
         super(props);
 
         this.state =  {
-            isPaused: true
+            isPaused: false
         };
     }
 
     // When the UI renders...
     componentDidMount() {
+        this.playPauseClick(7);
+        
+        this.props.socket.on("Device_Connected", () => {
+            this.playPauseClick(7);
+        });
+
         // Set up listener for play/pause change
         this.props.socket.on("Play/Pause_Change", (ppState) => {
             console.debug("Play Pause State: " + ppState);
@@ -30,6 +36,11 @@ class PlayPause extends Component {
 
     // When the UI is about to unrender, disconnect from socket.io
     componentWillUnmount() {
+        this.props.socket.off("Play/Pause_Change");
+    }
+
+    componentDidUpdate() {
+        this.props.socket.emit("PP_Change", this.state.isPaused);
     }
 
     // Animate play/pause button

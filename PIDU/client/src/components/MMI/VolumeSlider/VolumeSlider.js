@@ -17,6 +17,10 @@ class VolumeSlider extends Component {
 
     // When the UI renders...
     componentDidMount() {
+        this.props.socket.on("Device_Connected", () => {
+            this.props.MMICommand(8);
+        });
+        
         this.volSliderContainer = document.querySelector('.volumeSlider');
         this.sliderPath = document.querySelector('.sliderPath');
         this.basePath = "M0,480 l320,0 l0,480 l-320,0 Z"
@@ -41,6 +45,7 @@ class VolumeSlider extends Component {
 
     // When the UI is about to unrender
     componentWillUnmount() {
+        this.props.socket.off("Volume_Change");
     }
 
     // Handle new volume packet transmission
@@ -90,14 +95,17 @@ class VolumeSlider extends Component {
             }
 
             this.updateValue(parseInt(this.volSliderY * this.maxVol / this.volHeight));
+            let encodedVol = (this.state.volume * 127) / 100;
+            this.changeVolumeClick(4, encodedVol); // TODO: Also Send the currVol
+
         }
     };
 
     // if the cursor is released from the volume bar, update volume
     mouseUp() {
         if (this.mouseY) {
-            let encodedVol = (this.state.volume * 127) / 100;
-            this.changeVolumeClick(4, encodedVol); // TODO: Also Send the currVol
+            // let encodedVol = (this.state.volume * 127) / 100;
+            // this.changeVolumeClick(4, encodedVol); // TODO: Also Send the currVol
         }
 
         this.mouseY = 0;

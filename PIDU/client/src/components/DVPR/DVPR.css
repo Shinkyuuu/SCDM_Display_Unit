@@ -1,0 +1,47 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.header {
+    display:flex;
+    position: fixed;
+    top: 0;
+    height: 150px;
+    width: 100vw;
+    background-color: rgb(255, 255, 255);
+    box-shadow: 0 0 50px rgba(85, 85, 85, 0.5);
+
+    z-index: 1;
+}
+
+.title {
+    margin: auto 0 auto 50px;
+    font-size: 4em;
+    color: rgb(36, 36, 36);
+    flex-shrink: 0;
+}
+
+.navHomeBtn {
+    margin: auto 50px auto auto;
+    width: 150px;
+    height: 80px;
+    font-size: 2em;
+    background-color: rgb(255, 255, 255);
+    border-radius: 20px;
+    flex-shrink: 0;
+}
+
+#chatContainer {
+    position: absolute;
+    width: 100vw;
+    top: 150px;
+    background-color:rgb(255, 255, 255);
+    z-index: 0;
+}
+
+.chat {
+    margin: 40px;
+    font-size: 2em;
+    color: white;
+    word-wrap: break-word;      
+}

@@ -1,0 +1,24 @@
+
+.songContainer {
+    position: absolute;
+    width: 900px;
+    left: 50px;
+    bottom: 50px;
+  }
+  
+  .songName {
+    font-size: 4em;
+    color: rgb(129, 138, 175);
+  
+    /* color: rgb(154, 142, 182); */
+  }
+  
+  .artistName {
+    margin-top: 0px;
+    margin-bottom: 0px;
+    font-size : 1.75em;
+    color: rgb(116, 123, 180);
+  
+    /* color: rgb(96, 88, 122); */
+  }
+  

@@ -11,7 +11,7 @@
 
 .deviceName {
     margin: auto auto auto 10px;
-    color: rgb(255, 255, 255);
+    color: rgb(116, 123, 180);
 
     /* color: rgb(96, 88, 122); */
     font-size: 1.8rem;
@@ -20,14 +20,14 @@
 
 .deviceBar {
     width: 7px;
-    height: 20px;
+    height: 5px;
     border-radius: 2.5px;
-    background-color: rgb(255, 235, 144);
+    background-color: rgb(129, 138, 175);
 
     /* background-color: rgb(154, 142, 182); */
     flex-shrink: 0;
     margin-top: auto;
-    margin-bottom: 35px;
+    margin-bottom: 45px;
     /* margin: auto; */
 }
   

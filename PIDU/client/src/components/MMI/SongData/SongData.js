@@ -10,16 +10,15 @@ class SongData extends Component {
         super(props);
 
         this.state = {
-            songName: "Default Song Name",
-            artistName: "Default Artist Name"
+            songName: "",
+            artistName: ""
         };          
     }
 
     componentDidMount() {
         this.requestSongDataInverval = setInterval(() => {
-            this.props.MMICommand(7);
+            this.props.MMICommand(5);
         }, 1000);
-
 
         this.props.socket.on("Song", (data) => {
             this.setState(
@@ -32,6 +31,7 @@ class SongData extends Component {
     }
 
     componentWillUnmount() {
+        // this.props.socket.off("Song_Change");
         clearInterval(this.requestSongDataInverval);
     }
 
