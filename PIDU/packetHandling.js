@@ -42,9 +42,13 @@ function getPacketData() {
 // Add packet bytes to a buffer
 function parseBytes(byte, callback) {
     packetBuf.push(byte);
+
+    if (packetBuf.length === 1 && packetBuf[0] !== 0xbb) {
+        packetBuf.length = 0;
+    } 
   
     if (byteCount === 2) {
-      length = parseInt(byte) + 1;
+        length = parseInt(byte) + 1;
     }
   
     length -= 1;
@@ -71,12 +75,12 @@ function getSongData(packetBuf, callback) {
     currIndex += 1;
     currIndex += folderNameLen + 8;
 
-    console.log("FolderNameLen:" + folderNameLen);
+    // console.log("FolderNameLen:" + folderNameLen);
 
     var songNameLen = combine2Bytes(packetBuf[currIndex], packetBuf[currIndex + 1]);
 
     currIndex += 1;
-    console.log("SongNameLen:" + songNameLen);
+    // console.log("SongNameLen:" + songNameLen);
 
     var songName = packetBuf.slice(currIndex + 1, currIndex + 1 + songNameLen);
     currIndex += songNameLen + 7;
@@ -84,7 +88,7 @@ function getSongData(packetBuf, callback) {
     var artistNameLen = combine2Bytes(packetBuf[currIndex], packetBuf[currIndex + 1]);
     
     currIndex += 1;
-    console.log("ArtistNameLen:" + artistNameLen);
+    // console.log("ArtistNameLen:" + artistNameLen);
 
     var artistName = packetBuf.slice(currIndex + 1, currIndex + 1 + artistNameLen);
     currIndex += artistNameLen;

@@ -83,51 +83,48 @@ parser.on('data', (data) => {
         updatePacketData('from', packetBuf.map(byte => byte.toString(16)));
         io.emit("packets_data", getPacketData());
 
-        switch(packetBuf[4]) /* OPCODE */ {
-            // case 0x1b: 
-            //     if (packetBuf[5] === 0x04) {
-            //         io.emit("Play/Pause_Change", packetBuf[6]);
-
-            //     }
-
-            //     break;
-
-            case 0x1a: 
-                io.emit("Play/Pause_Change", packetBuf[17]);
-                break;
-            case 0x17:
-                switch(packetBuf[6]) {
-                    case 0x00:
-                        getDeviceName(packetBuf, (deviceName) => {
-                            io.emit("Device_Name_Change", deviceName);
-                        });    
-                        break;
-                    case 0x03:
-                        io.emit("Device_Connected");
-                        break;
-                    default:
-                        break;
-                }
-                break;
-            case 0x29:
-                io.emit("Volume_Change", packetBuf[6]);
-                break;
-            case 0x44:
-                if (packetBuf[10] == 0x00) {
-                    getSongData(packetBuf, (songName, artistName) => {
-                        io.emit("Song", {
-                            songName : songName, 
-                            artistName: artistName
+        if (packetBuf[0] === 0xbb) {
+            switch(packetBuf[4]) /* OPCODE */ {
+                case 0x1a: 
+                    io.emit("Play/Pause_Change", packetBuf[17]);
+                    break;
+                case 0x17:
+                    switch(packetBuf[6]) {
+                        case 0x00:
+                            getDeviceName(packetBuf, (deviceName) => {
+                                io.emit("Device_Name_Change", deviceName);
+                            });    
+                            break;
+                        case 0x03:
+                            io.emit("Device_Connected");
+                            break;
+                        default:
+                            break;
+                    }
+                    break;
+                case 0x29:
+                    io.emit("Volume_Change", packetBuf[6]);
+                    break;
+                case 0x44:
+                    if (packetBuf[10] == 0x00) {
+                        getSongData(packetBuf, (songName, artistName) => {
+                            io.emit("Song", {
+                                songName : songName, 
+                                artistName: artistName
+                            });
+        
+                            // console.log("songName: " + songName);  
+                            // console.log("artistName: " + artistName);
                         });
-    
-                    console.log("songName: " + songName);  
-                    console.log("artistName: " + artistName);
-                    });
-                }
-             
-            default:
-                break;
-        };
+                    }
+                 
+                default:
+                    break;
+            };    
+        } else {
+            console.log("Received fallacious packet");
+            console.log(packetBuf);     
+        }
     });
 });
 
