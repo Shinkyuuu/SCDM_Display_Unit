@@ -95,17 +95,14 @@ class VolumeSlider extends Component {
             }
 
             this.updateValue(parseInt(this.volSliderY * this.maxVol / this.volHeight));
-            let encodedVol = (this.state.volume * 127) / 100;
-            this.changeVolumeClick(4, encodedVol); // TODO: Also Send the currVol
-
         }
     };
 
     // if the cursor is released from the volume bar, update volume
     mouseUp() {
         if (this.mouseY) {
-            // let encodedVol = (this.state.volume * 127) / 100;
-            // this.changeVolumeClick(4, encodedVol); // TODO: Also Send the currVol
+            let encodedVol = (this.state.volume * 127) / 100;
+            this.changeVolumeClick(4, parseInt(encodedVol)); // TODO: Also Send the currVol
         }
 
         this.mouseY = 0;

@@ -18,7 +18,7 @@ class SongData extends Component {
     componentDidMount() {
         this.requestSongDataInverval = setInterval(() => {
             this.props.MMICommand(5);
-        }, 1000);
+        }, 3000);
 
         this.props.socket.on("Song", (data) => {
             this.setState(

@@ -69,6 +69,9 @@ app.post('/cmd', bodyParser.json(), function (req, res) {
 
     updatePacketData('to', encodedPacket.map(byte => byte.toString(16)));
     io.emit("packets_data", getPacketData());
+    console.log(encodedPacket.map(byte => byte.toString(16)));
+    // console.log(encodedPacket);
+
 })
 
 // Serial Port Byte Parser
@@ -79,11 +82,11 @@ port.on('error', function(err) {console.log('Error: ', err.message)})
 
 // On Serial Port Reception, parse the packet, then send relevent data to client
 parser.on('data', (data) => {
-    parseBytes(data[0], (packetBuf) => {
-        updatePacketData('from', packetBuf.map(byte => byte.toString(16)));
-        io.emit("packets_data", getPacketData());
+    parseBytes(data[0], (packetBuf) => { 
+        if ((packetBuf[0] == 0xbb) && calcChecksum(packetBuf) == packetBuf[packetBuf.length - 1]) {
+            updatePacketData('from', packetBuf.map(byte => byte.toString(16)));
+            io.emit("packets_data", getPacketData());
 
-        if (packetBuf[0] === 0xbb) {
             switch(packetBuf[4]) /* OPCODE */ {
                 case 0x1a: 
                     io.emit("Play/Pause_Change", packetBuf[17]);
@@ -93,7 +96,7 @@ parser.on('data', (data) => {
                         case 0x00:
                             getDeviceName(packetBuf, (deviceName) => {
                                 io.emit("Device_Name_Change", deviceName);
-                            });    
+                            });   
                             break;
                         case 0x03:
                             io.emit("Device_Connected");
@@ -123,7 +126,7 @@ parser.on('data', (data) => {
             };    
         } else {
             console.log("Received fallacious packet");
-            console.log(packetBuf);     
+            console.log(packetBuf);
         }
     });
 });

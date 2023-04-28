@@ -8,8 +8,8 @@
     top: 0;
     height: 150px;
     width: 100vw;
-    background-color: rgb(255, 255, 255);
-    box-shadow: 0 0 50px rgba(85, 85, 85, 0.5);
+    background-color: #313132;
+    box-shadow: 0 0 50px rgb(27, 27, 27);
 
     z-index: 1;
 }
@@ -17,7 +17,7 @@
 .title {
     margin: auto 0 auto 50px;
     font-size: 4em;
-    color: rgb(36, 36, 36);
+    color: rgb(255, 255, 255);
     flex-shrink: 0;
 }
 
@@ -26,7 +26,8 @@
     width: 150px;
     height: 80px;
     font-size: 2em;
-    background-color: rgb(255, 255, 255);
+    background-color: rgba(50, 37, 68, 0);
+    color: #ffffff;
     border-radius: 20px;
     flex-shrink: 0;
 }
@@ -35,7 +36,7 @@
     position: absolute;
     width: 100vw;
     top: 150px;
-    background-color:rgb(255, 255, 255);
+    background-color:rgb(19, 19, 19);
     z-index: 0;
 }
 

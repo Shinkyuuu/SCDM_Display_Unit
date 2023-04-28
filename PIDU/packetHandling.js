@@ -22,7 +22,7 @@ const commandPackets = [
 var packetData = {
     count: 0,
     toFrom: [],
-    packets: []
+    packets: [],
 };
 
     // [0xbb, 0x00, 0x05, 0x00, 0x41, 0x01, 0x00, 0x03, 0x00],
@@ -33,6 +33,12 @@ function updatePacketData(toFrom, packet) {
     packetData.count += 1;
     packetData.toFrom.push(toFrom);
     packetData.packets.push(packet);
+
+    if (packetData.count >= 500) {
+        packetData.count = 250;
+        packetData.toFrom.splice(0, 250);
+        packetData.packets.splice(0, 250);
+    }
 }
 
 function getPacketData() {
@@ -124,10 +130,11 @@ function calcChecksum(packet) {
 
     for (let i = 1; i < packet.length - 1; ++i) {
         checkSum += packet[i];
+        // console.log(checkSum);
+
     }
-
+    checkSum &= 0xFF;
     checkSum ^= 0xFF;
-
     return checkSum + 1;
 }   
 

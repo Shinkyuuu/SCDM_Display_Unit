@@ -9,9 +9,9 @@ module.exports = {
       transparent: 'transparent',
       current: 'currentColor',
       'senderTextColor': '#ffffff',
-      'senderBGColor': '#ffb5e6',
-      'receiverTextColor': '#343434',
-      'receiverBGColor': '#cfffcf',
+      'senderBGColor': '#3c83f7',
+      'receiverTextColor': '#ffffff',
+      'receiverBGColor': '#262629',
     },
   },
 
