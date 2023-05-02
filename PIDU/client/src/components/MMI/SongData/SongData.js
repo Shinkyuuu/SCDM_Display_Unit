@@ -1,7 +1,5 @@
 import React, { Component, Fragment } from "react";
-import anime from 'animejs/lib/anime.es.js';
 import SocketContext from '../../../context/socket/socket.js';
-
 import "./SongData.css";
 
 
@@ -65,5 +63,6 @@ const SongDataWithSocket = (props) => (
       {socket => <SongData {...props} socket={socket} />}
     </SocketContext.Consumer>
 );
+
 
 export default SongDataWithSocket;

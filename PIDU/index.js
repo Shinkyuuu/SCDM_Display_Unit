@@ -1,3 +1,4 @@
+// Imports
 const express = require("express"),
     bodyParser = require('body-parser'),
     PORT = process.env.PORT || 3001,
@@ -12,9 +13,17 @@ const express = require("express"),
         credentials: false
     }),
     { SerialPort } = require('serialport'),
-    // { ReadlineParser } = require('@serialport/parser-readline'),
     { ByteLengthParser } = require('@serialport/parser-byte-length'),
-    { updatePacketData, getPacketData, parseBytes, getDeviceName, getSongData, calcChecksum, commandPackets } = require("./packetHandling");
+    { 
+        updatePacketData, 
+        getPacketData, 
+        parseBytes, 
+        getDeviceName, 
+        getSongData, 
+        calcChecksum, 
+        commandPackets 
+    } = require("./packetHandling");
+
 
 
 // Use cors to allow cross origin resource sharing
@@ -25,6 +34,14 @@ app.use(
     })
 );
 
+// Open and Connect to Serial Port
+const port = new SerialPort({ path: '/dev/ttyACM0', baudRate: 115200 }, function (err) {
+    if (err) {
+        return console.log('Error: ', err.message);
+    }
+});
+
+// On socket connect, listen for packet requests and play/pause changes
 io.on('connection', socket => {
     socket.on("packets_request", () => {
         socket.emit("packets_data", getPacketData());
@@ -35,12 +52,7 @@ io.on('connection', socket => {
     });
 });
 
-// Open and Connect to Serial Port
-const port = new SerialPort({ path: '/dev/ttyACM0', baudRate: 115200 }, function (err) {
-    if (err) {
-        return console.log('Error: ', err.message);
-    }
-});
+
 
 
 // Receive commands from client and transmit it to serial port
@@ -69,9 +81,6 @@ app.post('/cmd', bodyParser.json(), function (req, res) {
 
     updatePacketData('to', encodedPacket.map(byte => byte.toString(16)));
     io.emit("packets_data", getPacketData());
-    console.log(encodedPacket.map(byte => byte.toString(16)));
-    // console.log(encodedPacket);
-
 })
 
 // Serial Port Byte Parser
@@ -83,44 +92,56 @@ port.on('error', function(err) {console.log('Error: ', err.message)})
 // On Serial Port Reception, parse the packet, then send relevent data to client
 parser.on('data', (data) => {
     parseBytes(data[0], (packetBuf) => { 
+        // If checksum is valid and the packet starts with '0xbb' (The expected start byte), handle packet
         if ((packetBuf[0] == 0xbb) && calcChecksum(packetBuf) == packetBuf[packetBuf.length - 1]) {
+            // Convert packet to ASCII string and store it 
             updatePacketData('from', packetBuf.map(byte => byte.toString(16)));
+            // Broadcast list of packets (for the clients to use)
             io.emit("packets_data", getPacketData());
 
-            switch(packetBuf[4]) /* OPCODE */ {
+            // Handle opcodes accordingly
+            switch(packetBuf[4]) {
+                // Play Pause has changed
                 case 0x1a: 
+                    // Notify client that play/pause state has changed (packetBuf[17] = ppstate)
                     io.emit("Play/Pause_Change", packetBuf[17]);
                     break;
+                // Device state has changed
                 case 0x17:
                     switch(packetBuf[6]) {
+                        // Device name has changed
                         case 0x00:
+                            // Retrieve new device name and notify client 
                             getDeviceName(packetBuf, (deviceName) => {
                                 io.emit("Device_Name_Change", deviceName);
                             });   
                             break;
+                        // Device has connected
                         case 0x03:
+                            // Notify client that device has changed
                             io.emit("Device_Connected");
                             break;
                         default:
                             break;
                     }
                     break;
+                // Volume has changed
                 case 0x29:
+                    // Notify client of new volume (packetBuf[6] = new volume)
                     io.emit("Volume_Change", packetBuf[6]);
                     break;
+                // Song name received
                 case 0x44:
+                    // If the sub-opcode (packetBuf[10]) is correct, handle packet
                     if (packetBuf[10] == 0x00) {
+                        // Retrieve song and artist name and notify client
                         getSongData(packetBuf, (songName, artistName) => {
                             io.emit("Song", {
                                 songName : songName, 
                                 artistName: artistName
                             });
-        
-                            // console.log("songName: " + songName);  
-                            // console.log("artistName: " + artistName);
                         });
                     }
-                 
                 default:
                     break;
             };    

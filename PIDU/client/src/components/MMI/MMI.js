@@ -11,34 +11,14 @@ import SongDataWithSocket from "./SongData/SongData.js";
 import SocketContext from '../../context/socket/socket.js';
 import { useNavigate } from "react-router";
 
+
 class MMI extends Component {
-    constructor(props) {
-        super(props);
-
-        // User Bluetooth Commands
-        this.commands = {
-            playPause: 0,
-            skipForward: 1,
-            skipBackward: 2,
-            pair: 3,
-            setVolume: 4
-        }
-    }
-
-    // When the UI renders...
-    componentDidMount() {
-
-    }
-
-    // When the UI is about to unrender, disconnect from socket.io
-    componentWillUnmount() {
-    }
-
     // Handle pair device button press
     LogoClick(command) {
         this.MMICommand(command);
     }
 
+    // Go to developer page
     goToDVPR() {
         this.props.navigate('/DVPR');
     }
@@ -64,8 +44,6 @@ class MMI extends Component {
                     <div className = "MMIContainer">
                         <PlayPauseWithSocket MMICommand = { this.MMICommand } />
                         <SkipsWithSocket MMICommand = { this.MMICommand } />
-                        {/* <button className = "navDVPRBtn" onClick = { () => { this.goToDVPR() }}></button> */}
-                        {/* <button onClick = { () => this.MMICommand(6) }>Ask for device name</button> */}
                     </div>
                 </div>
                 <SongDataWithSocket MMICommand = { this.MMICommand } />
@@ -86,6 +64,5 @@ const MMIWithSocket = (props) => {
         </SocketContext.Consumer>
     )
 }
-
 
 export default MMIWithSocket;

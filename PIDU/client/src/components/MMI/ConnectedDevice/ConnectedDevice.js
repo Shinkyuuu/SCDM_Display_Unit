@@ -14,6 +14,7 @@ class ConnectedDevice extends Component {
         }
     }
 
+    // Load bar elements
     createBars() {
         let barsContainer = document.getElementById("barsContainer");
  
@@ -25,6 +26,7 @@ class ConnectedDevice extends Component {
         }
     }
 
+    // Remove bar elements
     removeBars() {
         // Remove all bars
         for (let i = 0; i < this.numberOfBars; i++) {
@@ -33,6 +35,7 @@ class ConnectedDevice extends Component {
         }
     }
 
+    // Animate bar elements
     animateBars() {
         // Animate bars
         for (let i = 0; i < this.numberOfBars; i++) {
@@ -41,23 +44,18 @@ class ConnectedDevice extends Component {
         }
     }
 
-    pauseAnimation() {
-        for (let i = 0; i < this.numberOfBars; i++) {
-            this.animatePauseHeight('.a' + String(i));
-            this.animatePauseDiff('.a' + String(i));
-        }
-    }
-
     // When the UI renders...
     componentDidMount() {
+        // Retrieve device name and render bars
         this.props.MMICommand(6);
         this.createBars();
-        // this.animateBars();
         
+        // Update device name whenever a new device connects
         this.props.socket.on("Device_Connected", () => {
             this.props.MMICommand(6);
         });
 
+        // Update device name locally
         this.props.socket.on("Device_Name_Change", (deviceName) => {
             this.setState(
                 {
@@ -66,6 +64,7 @@ class ConnectedDevice extends Component {
             );
         });
 
+        // Listen for play pause changes and pause bars accordingly
         this.props.socket.on("PP_Change", (isPaused) => {
             if (isPaused) {
                 this.removeBars();
@@ -180,5 +179,6 @@ const ConnectedDeviceWithSocket = (props) => (
       {socket => <ConnectedDevice {...props} socket={socket} />}
     </SocketContext.Consumer>
 );
+
 
 export default ConnectedDeviceWithSocket;

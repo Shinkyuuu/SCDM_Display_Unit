@@ -1,5 +1,4 @@
 import React, { Component, Fragment } from "react";
-// import anime from 'animejs/lib/anime.es.js';
 import "./VolumeSlider.css";
 import SocketContext from '../../../context/socket/socket.js';
 
@@ -140,5 +139,6 @@ const VolumeSliderWithSocket = (props) => (
       {socket => <VolumeSlider {...props} socket={socket} />}
     </SocketContext.Consumer>
 );
+
 
 export default VolumeSliderWithSocket;

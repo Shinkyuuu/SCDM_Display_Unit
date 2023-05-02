@@ -176,14 +176,6 @@ class Skips extends Component {
         return (
             <Fragment>
                 <button id = "skipBackwardBtn" className = "skipBtn" onClick={() => this.skipBackwardClick(2)}> 
-                    {/* <svg className = "SContainer" width="230px" height="200px">
-                        <g>
-                            <path className = "SSymbol" d="M50,50 L50,150 Z" />
-                            <path className = "SSymbol" d="M180,50 L180,150 L93.4,100 Z" />
-                        </g>
-                    </svg> */}
-
-
                     <svg className = "SContainer" width="255px" height="200px">
                         <g>
                             <polyline className = "SSymbol l1" 
@@ -207,14 +199,7 @@ class Skips extends Component {
                         </g>
                     </svg>
                 </button>
-
                 <button id = "skipForwardBtn" className = "skipBtn" onClick={() => this.skipForwardClick(1)}> 
-                    {/* <svg className = "SContainer" width="230px" height="200px">
-                        <g>
-                            <path className = "SSymbol" d="M50,50 L50,150 L136.6,100 Z" />
-                            <path className = "SSymbol" d="M180,50 L180,150  Z" />
-                        </g>
-                    </svg> */}
                     <svg className = "SContainer" width="225px" height="200px">
                         <g>
                             <polyline className = "SSymbol r1" 
@@ -222,22 +207,24 @@ class Skips extends Component {
                                     this.offset + ",50 " +
                                     this.offset + ",150 " +
                                     (this.offset + 86.6) + ",100 " +
-                                    this.offset + ",50 " } />
+                                    this.offset + ",50 " 
+                                } />
                             <polyline className = "SSymbol r2" 
                                 points= { 
                                     this.offset + ",50 " +
                                     this.offset + ",150 " +
                                     (this.offset + 86.6) + ",100 " +
-                                    this.offset + ",50 " } />
+                                    this.offset + ",50 " 
+                                } />
                             <polyline className = "SSymbol r3" 
                                 points= { 
                                     (this.offset + 100) + ",50 " +
                                     (this.offset + 100) + ",150 " +
                                     (this.offset + 186.6) + ",100 " +
-                                    (this.offset + 100) + ",50 " } />
+                                    (this.offset + 100) + ",50 " 
+                                } />
                         </g>
                     </svg>
-
                 </button>
             </Fragment>        
         );
@@ -249,5 +236,6 @@ const SkipsWithSocket = (props) => (
       {socket => <Skips {...props} socket={socket} />}
     </SocketContext.Consumer>
 );
+
 
 export default SkipsWithSocket;
